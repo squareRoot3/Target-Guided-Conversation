@@ -16,7 +16,7 @@ class Target_Chat():
     def chat(self, sess):
         history = []
         history.append(random.sample(self.start_utter, 1)[0])
-        target_kw = random.sample(config_data._keywords_candi[:100], 1)[0]
+        target_kw = random.sample(target_set,1)[0]
         self.agent.target = target_kw
         self.agent.score = 0.
         self.agent.reply_list = []

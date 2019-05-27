@@ -9,7 +9,7 @@ class Target_Chat():
         self.start_utter = config_data._start_corpus
         with tf.Session(config=self.agent.gpu_config) as sess:
             self.agent.retrieve_init(sess)
-            for i in range(10):
+            for i in range(int(FLAGS.times)):
                 print('--------Session {} --------'.format(i))
                 self.chat(sess)
 
@@ -37,10 +37,16 @@ if __name__ == '__main__':
     flags = tf.flags
     # supports kernel / matrix / neural / retrieval / retrieval-stg
     flags.DEFINE_string('agent', 'kernel', 'The agent type')
+    flags.DEFINE_string('times', '100', 'Conversation times')
     FLAGS = flags.FLAGS
 
     config_data = importlib.import_module('config.data_config')
     config_model = importlib.import_module('config.' + FLAGS.agent)
     model = importlib.import_module('model.' + FLAGS.agent)
     predictor = model.Predictor(config_model, config_data, 'test')
+    
+    target_set = []
+    for line in open('tx_data/test/keywords.txt', 'r').readlines():
+        target_set = target_set + line.strip().split(' ')
+
     Target_Chat(predictor)

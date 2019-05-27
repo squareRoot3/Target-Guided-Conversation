@@ -26,7 +26,7 @@ class Target_Chat():
             source = utter_preprocess(history, self.agent.data_config._max_seq_len)
             reply = self.agent.retrieve(source, sess)
             print('AGENT: ', reply)
-            print('Keyword: {}, Similarity: {:.2f}'.format(self.agent.next_kw, self.agent.score))
+#             print('Keyword: {}, Similarity: {:.2f}'.format(self.agent.next_kw, self.agent.score))
             history.append(reply)
             if is_reach_goal(history[-2] + history[-1], target_kw):
                 print('Successfully chat to the target \'{}\'.'.format(target_kw))

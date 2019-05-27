@@ -8,7 +8,7 @@ neural_opt_hparams = {
     "optimizer": {
         "type": "AdamOptimizer",
         "kwargs": {
-            "learning_rate": 0.001,
+            "learning_rate": 0.005,
         }
     },
     "learning_rate_decay": {

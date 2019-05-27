@@ -1,39 +1,53 @@
-# Target-guided Conversation
+# Target-Guided Open-Domain Conversation
 
 ### Requirement
 nltk = 3.4  
-tensoflow = 1.9  
-texar = 0.1  
+tensoflow = 1.12  
+You also need to install [Texar](https://github.com/asyml/texar).
 
-### Data Preparation
-
-You can download the processed data from [our Onedrive]() and train it directly. The data root path is defined in `data_config.py`.  
-
-You can also use the source conversation corpus from [The Conversational Intelligence Challenge 2](http://convai.io/) and process it by the scripts in `preprocess`. We provide a copy of the source corpus in [our Onedrive]().
-
-- Use processed data
-  - [download website]()
-  -  move processed data in 
-- Use source data
-  - [download website]()
-  - move the data to `preprocess\convai2`
-  -  run `data_maker.py`
 
 ### Usage
 
+#### Data Preparation
+You need to download data from [google drive](https://drive.google.com/file/d/1oTjOQjm7iiUitOPLCmlkXOCbEPoSWDPX/view?usp=sharing)
+and unzip it into `preprocess/convai2`. Then run the following command:
 ```shell
-# train the keyword prediction module
-python train.py -type kernel -mode train_kw
+python preprocess/prepare_data.py
+```
+By default, the processed data will be put in the `tx_data` directory.
 
-# train the retrieval module
-python train.py -type kernel -mode train
+#### Turn-level Supervised Learning
+In this project there are 5 different types of agents, including the kernel/neural/matrix/retrieval/retrieval_stgy agent,
+ which are all discribed in our paper. You can modify the configration of each agent in the `config` directory.
 
-# start target-guided open-domain conversation
-python chat.py
+To train the kernel/neural/matrix agent, you need to first train/test the keyword prediction module, 
+and then train/test the retrieval module of each agent specified by the `--agent` parameter.
+
+```shell
+python train.py --mode train_kw --agent kernel
+python train.py --mode train --agent kernel
+python train.py --mode test --agent kernel
 ```
 
-### Todo
-- add self-play (with the retrieval-baseline)
-- adapt a larger corpus
-- improve the topic guiding strategy of our agent
+The retrieval agent and the retrieval_stgy agent share the same retrival module. You are only need to train one of them:
 
+```shell
+python train.py --mode train --agent retrieval
+python train.py --mode test --agent retrieval
+```
+
+#### Target-guided Conversation
+
+After turn-level training, you can start target-guided conversation (human evaluation) with 
+the kernel/neural/matrix/retrieval/retrieval_stgy  agent specified by the `--agent` parameter.
+
+```shell
+python chat.py --agent kernel
+```
+
+You can also watch the simulation of the target-guided conversation 
+between the retrieval agent pretending the user and the kernel/neural/matrix/retrieval_stgy agent specified by the `--agent` parameter.
+
+```shell
+python simulate.py --agent kernel
+```

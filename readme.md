@@ -12,7 +12,8 @@ You also need to install [Texar](https://github.com/asyml/texar).
 You need to download data from [google drive](https://drive.google.com/file/d/1oTjOQjm7iiUitOPLCmlkXOCbEPoSWDPX/view?usp=sharing)
 and unzip it into `preprocess/convai2`. Then run the following command:
 ```shell
-python preprocess/prepare_data.py
+cd preprocess
+python prepare_data.py
 ```
 By default, the processed data will be put in the `tx_data` directory.
 

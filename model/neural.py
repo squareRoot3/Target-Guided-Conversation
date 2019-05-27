@@ -174,8 +174,8 @@ class Predictor():
                             print('batch {}, loss={}, acc1={}'.format(cur_step, loss, np.mean(cnt_acc[-200:])))
                     except tf.errors.OutOfRangeError:
                         break
+                        
                 self.iterator.switch_to_val_data(sess)
-
                 cnt_acc, cnt_kwacc = [], []
                 while True:
                     try:
@@ -189,17 +189,6 @@ class Predictor():
                         if mean_acc > max_val_acc:
                             max_val_acc = mean_acc
                             saver.save(sess, self.config._save_path)
-                        break
-                self.iterator.switch_to_test_data(sess)
-
-                cnt_acc = []
-                while True:
-                    try:
-                        feed = {tx.global_mode(): tf.estimator.ModeKeys.PREDICT}
-                        acc_ = sess.run(acc, feed_dict=feed)
-                        cnt_acc.append(acc_)
-                    except tf.errors.OutOfRangeError:
-                        print('test acc1={}'.format(np.mean(cnt_acc)))
                         break
 
     def test(self):

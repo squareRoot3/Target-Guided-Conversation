@@ -50,7 +50,7 @@ the kernel/neural/matrix/retrieval/retrieval_stgy  agent specified by the `--age
 ```shell
 python chat.py --agent kernel
 ```
-A demo of target-guided conversation (user is required to input the response after "HUMAN:")
+A demo of target-guided conversation (user is required to input the response after `HUMAN:`)
 
 ```
 --------Session 0 --------

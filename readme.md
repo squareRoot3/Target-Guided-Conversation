@@ -35,7 +35,7 @@ python train.py --mode train --agent kernel
 python train.py --mode test --agent kernel
 ```
 
-The retrieval agent and the retrieval_stgy agent share the same retrival module. You are only need to train one of them:
+The retrieval agent and the retrieval_stgy agent share the same retrival module. You only need to train one of them:
 
 ```shell
 python train.py --mode train --agent retrieval
@@ -50,10 +50,49 @@ the kernel/neural/matrix/retrieval/retrieval_stgy  agent specified by the `--age
 ```shell
 python chat.py --agent kernel
 ```
+A demo of target-guided conversation (user is required to input the response after "HUMAN:")
+
+```
+--------Session 0 --------
+START:  hello, how are you doing
+HUMAN:  hi i am great just finishing up some homework. how about you
+AGENT:  just got done eating some chicken and rice after i got done with my gym session
+HUMAN:  i am gonna eat some vegetable for dinner
+AGENT:  so you are vegetarian ? i am from los angeles so thereare lots of vegetarian restaurants
+HUMAN:  i am not a vegetarian . fried chicken is my favorite.
+AGENT:  oh boy , when i go to mcdonald i always get fries for my 2 dogs
+Successfully chat to the target 'mcdonald'.
+```
 
 You can also watch the simulation of the target-guided conversation 
-between the retrieval agent pretending the user and the kernel/neural/matrix/retrieval_stgy agent specified by the `--agent` parameter.
+between the retrieval agent pretending the user and the kernel/neural/matrix/retrieval_stgy agent specified by the `--agent` parameter. Simulation times are defined by the `--times` parameter. The program will calculate the success times and average turns in the end.
 
 ```shell
-python simulate.py --agent kernel
+python simulate.py --agent kernel --times 100
+```
+
+A demo of simulation:
+```
+--------Session 0 --------
+START: hey hey good morning to you
+retrieval_agent:  fine thanks . what do you do for a living ?
+kernel_agent:  rewarding job , i work at a hospital
+Keyword: job, Similarity: 0.58
+Successfully chat to the target 'hospital'.
+
+...
+--------Session 99 --------
+START: hey hows it going ? i'm just cooking a steak
+retrieval_agent:  i'm thinking of a bbq sandwich for lunch
+kernel_agent:  nice i love to cook but now its just me and the fur babies
+Keyword: baby, Similarity: 0.45
+retrieval_agent:  i love bagels however i own a dry cleaners
+kernel_agent:  i love animals felix my cat and my dog emmy
+Keyword: cat, Similarity: 0.56
+retrieval_agent:  sounds awesome i have all kind of pets my family own a farm
+kernel_agent:  i love blue as well even my hair is blue
+Keyword: blue, Similarity: 1.00
+Successfully chat to the target 'blue'.
+
+success time 83, average turns 4.28
 ```

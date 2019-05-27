@@ -98,6 +98,8 @@ def calculate_linsim(a, b):
 
 def is_reach_goal(context, goal):
     context = kw_tokenize(context)
+    if goal in context:
+        return True
     for wd in context:
         if is_candiword(wd):
             rela = calculate_linsim(wd, goal)

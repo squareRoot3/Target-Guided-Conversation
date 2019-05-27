@@ -58,7 +58,9 @@ for stage in ['train', 'valid', 'test']:
                 target_file.write(target_str + '\n')
                 context_file.write(' '.join(sample['kwlist'][i-2] +
                     sample['kwlist'][i-1]) + '\n')
+                keywords_file.write(' '.join(sample['kwlist'][i]) + '\n')
                 label_file.write('0\n')
+                
     source_file.close()
     target_file.close()
     label_file.close()

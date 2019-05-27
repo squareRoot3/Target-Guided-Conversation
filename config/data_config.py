@@ -40,8 +40,9 @@ data_hparams = {
                 "files": [os.path.join(data_root, '{}/context.txt'.format(stage))],
                 "vocab_share_with": 0,
                 "embedding_init_share_with": 0,
-                "max_seq_length": _max_seq_len*2,
                 "data_name": "context",
+                "bos_token": '',
+                "eos_token": '',
             },
             {  # target keywords
                 "files": [os.path.join(data_root, '{}/keywords.txt'.format(stage))],

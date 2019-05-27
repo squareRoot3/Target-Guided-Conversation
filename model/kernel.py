@@ -104,17 +104,6 @@ class Predictor():
                 if stopping_flag >= self.config._early_stopping:
                     break
 
-                cnt_acc = []
-                self.iterator.switch_to_test_data(sess)
-                while True:
-                    try:
-                        feed = {tx.global_mode(): tf.estimator.ModeKeys.PREDICT}
-                        acc_ = sess.run(acc, feed_dict=feed)
-                        cnt_acc.append(acc_)
-                    except tf.errors.OutOfRangeError:
-                        print('test acc1={}'.format(np.mean(cnt_acc)))
-                        break
-
     def test_keywords(self):
         batch = self.iterator.get_next()
         loss, acc = self.predict_keywords(batch)
@@ -227,18 +216,6 @@ class Predictor():
                         break
                 if stopping_flag >= self.config._early_stopping:
                     break
-
-                self.iterator.switch_to_test_data(sess)
-                cnt_acc, cnt_kwacc = [],[]
-                while True:
-                    try:
-                        feed = {tx.global_mode(): tf.estimator.ModeKeys.PREDICT}
-                        acc_, acc_kw = sess.run([acc, acc_t], feed_dict=feed)
-                        cnt_acc.append(acc_)
-                        cnt_kwacc.append(acc_kw)
-                    except tf.errors.OutOfRangeError:
-                        print('test acc1={}, kw_acc1={}'.format(np.mean(cnt_acc), np.mean(cnt_kwacc)))
-                        break
 
     def test(self):
         batch = self.iterator.get_next()

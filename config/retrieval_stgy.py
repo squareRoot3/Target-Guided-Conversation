@@ -1,6 +1,6 @@
 _hidden_size = 200
 _code_len = 200
-_save_path = 'save/model/baseline_524'
+_save_path = 'save/retrieval/model_1'
 _max_epoch = 10
 
 source_encoder_hparams = {

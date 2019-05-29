@@ -13,6 +13,9 @@ if __name__ == '__main__':
     model = importlib.import_module('model.' + FLAGS.agent)
     predictor = model.Predictor(config_model, config_data, FLAGS.mode)
 
+    if not os.path.exists('save/'+FLAGS.agent):
+        os.makedirs('save/'+FLAGS.agent)
+    
     if FLAGS.mode == 'train_kw':
         predictor.train_keywords()
     if FLAGS.mode == 'test_kw':

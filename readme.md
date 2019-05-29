@@ -3,7 +3,7 @@
 This is the code for the following paper:
 
 [Target-Guided Open-Domain Conversation](http://arxiv.org/abs/1905.11553)
-*Jianheng Tang, Tiancheng Zhao, Chengyan Xiong, Xiaodan Liang, Eric Xing, Zhiting Hu; ACL 2019*
+*Jianheng Tang, Tiancheng Zhao, Chenyan Xiong, Xiaodan Liang, Eric Xing, Zhiting Hu; ACL 2019*
 
 ### Requirement
 

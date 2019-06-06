@@ -83,13 +83,4 @@ opt_hparams = {
             "learning_rate": 0.001,
         }
     },
-    "learning_rate_decay": {
-        "type": "inverse_time_decay",
-        "kwargs": {
-            "decay_steps": 1600,
-            "decay_rate": 0.8
-        },
-        "start_decay_step": 0,
-        "end_decay_step": 16000,
-    },
 }

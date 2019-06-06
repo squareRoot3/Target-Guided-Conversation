@@ -43,11 +43,12 @@ class Predictor():
         loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=labels, logits=logits))
         ans = tf.arg_max(logits, -1)
         acc = tx.evals.accuracy(batch['label'], ans)
-        return loss, acc
+        rank = tf.nn.top_k(logits, k=20)[1]
+        return loss, acc, rank
 
     def train(self):
         batch = self.iterator.get_next()
-        loss, acc = self.forward(batch)
+        loss, acc, _ = self.forward(batch)
         op_step = tf.Variable(0, name='op_step')
         train_op = tx.core.get_train_op(loss, global_step=op_step, hparams=self.config.opt_hparams)
         max_val_acc = 0.
@@ -88,25 +89,33 @@ class Predictor():
 
     def test(self):
         batch = self.iterator.get_next()
-        loss, acc = self.forward(batch)
+        loss, acc, rank = self.forward(batch)
         with tf.Session(config=self.gpu_config) as sess:
             sess.run(tf.tables_initializer())
             self.saver = tf.train.Saver()
             self.saver.restore(sess, self.config._save_path)
             self.iterator.switch_to_test_data(sess)
-            cnt_acc = []
+            rank_cnt = []
             while True:
                 try:
                     feed = {tx.global_mode(): tf.estimator.ModeKeys.PREDICT}
-                    acc_ = sess.run([acc], feed_dict=feed)
-                    cnt_acc.append(acc_)
+                    ranks, labels = sess.run([rank, batch['label']], feed_dict=feed)
+                    for i in range(len(ranks)):
+                        rank_cnt.append(np.where(ranks[i]==labels[i])[0][0])
                 except tf.errors.OutOfRangeError:
-                    print('test acc1={}'.format(np.mean(cnt_acc)))
+                    rec = [0,0,0,0,0]
+                    MRR = 0
+                    for rank in rank_cnt:
+                        for i in range(5):
+                            rec[i] += (rank <= i)
+                        MRR += 1 / (rank+1)
+                    print('test rec1@20={:.4f}, rec3@20={:.4f}, rec5@20={:.4f}, MRR={:.4f}'.format(
+                        rec[0]/len(rank_cnt), rec[2]/len(rank_cnt), rec[4]/len(rank_cnt), MRR/len(rank_cnt)))
                     break
 
     def retrieve_init(self, sess):
         data_batch = self.iterator.get_next()
-        loss, acc = self.forward(data_batch)
+        loss, acc, _ = self.forward(data_batch)
         self.corpus = self.data_config._corpus
         self.corpus_data = tx.data.MonoTextData(self.data_config.corpus_hparams)
         corpus_iterator = tx.data.DataIterator(self.corpus_data)
